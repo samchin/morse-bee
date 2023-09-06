@@ -94,6 +94,10 @@ store.startGame({ allAnswers });
         </el-tooltip>
         <span class="responsive-menu-text">{{ $t("Yesterday") }}</span>
       </el-menu-item>
+
+      <!-- <audio id="hiveAudio" src="https://upload.wikimedia.org/wikipedia/commons/f/f3/A_morse_code.ogg" preload="auto" hidden></audio> -->
+      <audio id="hiveAudio" preload="auto" hidden></audio>
+
       <el-menu-item index="3">
         <el-switch
           v-model="darkmode"
