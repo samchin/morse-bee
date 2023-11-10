@@ -87,6 +87,40 @@ const playHiveSound = (letter: any) => {
     audio.play();
   }
 };
+
+const displayMorse = (letter: any) => {
+  const dict: Record<string, string> = {
+    a: "._",
+    b: "_...",
+    c: "_._.",
+    d: "_..",
+    e: ".",
+    f: ".._.",
+    g: "_ _.",
+    h: "....",
+    i: "..",
+    j: "._ _ _",
+    k: "_._",
+    l: "._..",
+    m: "_ _",
+    n: "_ .",
+    o: "_ _ _",
+    p: "._ _.",
+    q: "_ _._",
+    r: "._.",
+    s: "...",
+    t: "_",
+    u: ".._",
+    v: "..._",
+    w: "._ _",
+    x: "_.._",
+    y: "_._ _",
+    z: "_ _..",
+  };
+  const morse = dict[letter];
+  console.log(morse);
+  return morse.concat(" ", " ");
+};
 </script>
 
 <template>
@@ -97,6 +131,15 @@ const playHiveSound = (letter: any) => {
         :class="{ 'middle-letter': letter === store.middleLetter }"
         :key="`user-guess-${index}`">
         {{ letter }}
+      </strong>
+    </div>
+
+    <div class="user-guess-morse">
+      <strong
+        v-for="(letter, index) in userGuess"
+        :class="{ 'middle-letter': letter === store.middleLetter }"
+        :key="`user-guess-${index}`">
+        {{ displayMorse(letter) }}
       </strong>
     </div>
 
@@ -116,6 +159,9 @@ const playHiveSound = (letter: any) => {
         <text class="cell-letter" x="50%" y="50%" dy="10.75%">
           {{ store.middleLetter }}
         </text>
+        <text class="cell-morse" x="50%" y="65%" dy="10.75%">
+          {{ displayMorse(store.middleLetter) }}
+        </text>
       </svg>
       <svg
         v-for="(letter, index) in otherLetters"
@@ -133,6 +179,9 @@ const playHiveSound = (letter: any) => {
           stroke-width="7.5" />
         <text class="cell-letter" x="50%" y="50%" dy="10.75%">
           {{ letter }}
+        </text>
+        <text class="cell-morse" x="50%" y="65%" dy="10.75%">
+          {{ displayMorse(letter) }}
         </text>
       </svg>
     </div>
@@ -170,6 +219,13 @@ const playHiveSound = (letter: any) => {
     color: $bl-yellow;
   }
 }
+
+.user-guess-morse {
+  .middle-letter {
+    color: $bl-yellow;
+  }
+}
+
 .sb-controls {
   /* put entire hive behind correctGuesses when table is expanded */
   max-width: 290px;
@@ -204,6 +260,14 @@ const playHiveSound = (letter: any) => {
   text-transform: uppercase;
   pointer-events: none;
 }
+
+.hive .cell-morse {
+  font-weight: 600;
+  font-size: 25px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
 .hive-cell:first-child .cell-fill {
   cursor: pointer;
   fill: $bl-yellow;
