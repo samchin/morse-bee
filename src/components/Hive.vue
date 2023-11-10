@@ -85,47 +85,43 @@ const playHiveSound = (letter: any) => {
   audio.src = dict[letter];
   if (audio) {
     audio.play();
-};
+  }
 };
 
-
-const displayMorse = (letter:any) => {
+const displayMorse = (letter: any) => {
   const dict: Record<string, string> = {
-    a: '._',
-    b: '_...',
-    c: '_._.',
-    d: '_..',
-    e: '.',
-    f: '.._.',
-    g: '_ _.',
-    h: '....',
-    i: '..',
-    j: '._ _ _',
-    k: '_._',
-    l: '._..',
-    m: '_ _',
-    n: '_ .',
-    o: '_ _ _',
-    p: '._ _.',
-    q: '_ _._',
-    r: '._.',
-    s: '...',
-    t: '_',
-    u: '.._',
-    v: '..._',
-    w: '._ _',
-    x: '_.._',
-    y: '_._ _',
-    z: '_ _..',
+    a: "._",
+    b: "_...",
+    c: "_._.",
+    d: "_..",
+    e: ".",
+    f: ".._.",
+    g: "_ _.",
+    h: "....",
+    i: "..",
+    j: "._ _ _",
+    k: "_._",
+    l: "._..",
+    m: "_ _",
+    n: "_ .",
+    o: "_ _ _",
+    p: "._ _.",
+    q: "_ _._",
+    r: "._.",
+    s: "...",
+    t: "_",
+    u: ".._",
+    v: "..._",
+    w: "._ _",
+    x: "_.._",
+    y: "_._ _",
+    z: "_ _..",
   };
   const morse = dict[letter];
   console.log(morse);
-  return morse.concat(" "," ")
-}
-
+  return morse.concat(" ", " ");
+};
 </script>
-
-
 
 <template>
   <div class="sb-controls" :style="`z-index: ${ZIndex}`">
@@ -150,10 +146,9 @@ const displayMorse = (letter:any) => {
     <div class="hive">
       <svg
         class="hive-cell center"
-        
         @click="
-            playHiveSound(store.middleLetter);
-            userGuess += store.middleLetter;
+          playHiveSound(store.middleLetter);
+          userGuess += store.middleLetter;
         "
         viewBox="0 0 120 104">
         <polygon
@@ -225,7 +220,7 @@ const displayMorse = (letter:any) => {
   }
 }
 
-.user-guess-morse{
+.user-guess-morse {
   .middle-letter {
     color: $bl-yellow;
   }
