@@ -4,6 +4,7 @@ import { useMainStore } from "../store";
 import { shuffle } from "../utils";
 import { useI18n } from "vue-i18n";
 import en from "../locales/en.json";
+import { GAP } from "element-plus";
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -81,11 +82,20 @@ const playHiveSound = (letter: any) => {
     y: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Y_morse_code.ogg",
     z: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Z_morse_code.ogg",
   };
+  var cover = document.getElementById('cover');
   console.log(letter);
   audio.src = dict[letter];
   if (audio) {
-    audio.play();
-  }
+    if (cover){
+      audio.play();
+      cover.style.display = 'block';
+    }
+  };
+  audio.onended = function() {
+    if (cover){
+        cover.style.display = 'none';
+    }
+  };
 };
 
 const displayMorse = (letter: any) => {
@@ -124,6 +134,10 @@ const displayMorse = (letter: any) => {
 </script>
 
 <template>
+
+  <div class="cover" id="cover">
+  </div>
+
   <div class="sb-controls" :style="`z-index: ${ZIndex}`">
     <div class="user-guess">
       <strong
@@ -349,6 +363,20 @@ html.dark {
     color: $bl-grey;
   }
 }
+
+#cover{
+  display: none;
+  background-color: white;
+  padding: 0 0;
+  width: 26%;
+  height: 20vw;
+  position: absolute;
+  top: 62%;
+  left: 35%;
+  z-index: 999;
+  opacity: 50%;
+}
+
 
 @media only screen and (max-height: 650px) {
   .sb-controls {
