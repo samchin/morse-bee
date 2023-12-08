@@ -82,18 +82,18 @@ const playHiveSound = (letter: any) => {
     y: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Y_morse_code.ogg",
     z: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Z_morse_code.ogg",
   };
-  var cover = document.getElementById('cover');
+  var cover = document.getElementById("cover");
   console.log(letter);
   audio.src = dict[letter];
   if (audio) {
-    if (cover){
+    if (cover) {
       audio.play();
-      cover.style.display = 'block';
+      cover.style.display = "block";
     }
-  };
-  audio.onended = function() {
-    if (cover){
-        cover.style.display = 'none';
+  }
+  audio.onended = function () {
+    if (cover) {
+      cover.style.display = "none";
     }
   };
 };
@@ -134,11 +134,10 @@ const displayMorse = (letter: any) => {
 </script>
 
 <template>
+  <div class="cover" id="cover"></div>
+  <button id="playQuiz">Play Quiz</button>
 
-  <div class="cover" id="cover">
-  </div>
-
-  <div class="sb-controls" :style="`z-index: ${ZIndex}`">
+  <div class="sb-controls" style="`z-index: ${ZIndex}`">
     <div class="user-guess">
       <strong
         v-for="(letter, index) in userGuess"
@@ -364,19 +363,18 @@ html.dark {
   }
 }
 
-#cover{
+#cover {
   display: none;
   background-color: white;
   padding: 0 0;
   width: 26%;
-  height: 20vw;
+  height: 50%;
   position: absolute;
   top: 62%;
   left: 35%;
   z-index: 999;
   opacity: 50%;
 }
-
 
 @media only screen and (max-height: 650px) {
   .sb-controls {
