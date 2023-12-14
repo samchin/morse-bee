@@ -136,6 +136,9 @@ const displayMorse = (letter: any) => {
 <template>
   <div class="cover" id="cover"></div>
   <button id="playQuiz">Play Quiz</button>
+  <button id="stopQuiz">Stop Quiz</button>
+  <button id="pauseQuiz">Pause Quiz</button>
+  <button id="continueQuiz">Continue Quiz</button>
 
   <div class="sb-controls" style="`z-index: ${ZIndex}`">
     <div class="user-guess">
@@ -367,11 +370,11 @@ html.dark {
   display: none;
   background-color: white;
   padding: 0 0;
-  width: 26%;
+  width: 100%;
   height: 50%;
   position: absolute;
   top: 62%;
-  left: 35%;
+  left: 20%;
   z-index: 999;
   opacity: 50%;
 }
