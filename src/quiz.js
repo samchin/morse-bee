@@ -1,6 +1,5 @@
 import allAnswers from "../data/allAnswers.json";
 
-
 function preloadSounds() {
   const dict = {
     a: "https://upload.wikimedia.org/wikipedia/commons/f/f3/A_morse_code.ogg",
@@ -40,7 +39,6 @@ function preloadSounds() {
 
 // Call the preloadSounds function during initialization
 preloadSounds();
-
 
 // fetch today's 7 hive letters
 function getHiveLetters() {
@@ -109,20 +107,19 @@ function playHiveSound(letter) {
 
     // only play if all sounds are loaded and the last sounds as ended
     return new Promise((resolve) => {
-      audio.addEventListener('canplaythrough', function onCanPlayThrough() {
-        audio.removeEventListener('canplaythrough', onCanPlayThrough);
+      audio.addEventListener("canplaythrough", function onCanPlayThrough() {
+        audio.removeEventListener("canplaythrough", onCanPlayThrough);
         audio.play();
         console.log("now playing: " + letter);
       });
 
-      audio.addEventListener('ended', function onEnded() {
-        audio.removeEventListener('ended', onEnded);
+      audio.addEventListener("ended", function onEnded() {
+        audio.removeEventListener("ended", onEnded);
         resolve();
       });
     });
   }
 }
-
 
 function playWordMorse(words) {
   const playButton = document.getElementById("playQuiz");
@@ -136,7 +133,7 @@ function playWordMorse(words) {
   async function playNextLetter() {
     if (currentIndex < words.length && isPlaying) {
       const word = words[currentIndex];
-      console.log('curr word: ' + word);
+      console.log("curr word: " + word);
 
       for (const letter of word) {
         await playHiveSound(letter);
@@ -149,19 +146,22 @@ function playWordMorse(words) {
 
         if (isPaused) {
           // Pause if the pause button was pressed during playback
-          await new Promise(resolve => {
+          await new Promise((resolve) => {
             // when paused, set up eventlister for the continue button
-            continueButton.addEventListener("click", function onContinueClick() {
-              // remove continue eventlistener when continue is clicked once
-              continueButton.removeEventListener("click", onContinueClick);
-              resolve();
-            }, { once: true });
+            continueButton.addEventListener(
+              "click",
+              function onContinueClick() {
+                // remove continue eventlistener when continue is clicked once
+                continueButton.removeEventListener("click", onContinueClick);
+                resolve();
+              },
+              { once: true }
+            );
           });
         }
-
       }
       // 2 seconds gap between each word. no gap between each letter of the word
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       currentIndex++;
       playNextLetter();
@@ -189,7 +189,6 @@ function playWordMorse(words) {
     isPaused = false;
   });
 }
-
 
 const letters = getHiveLetters();
 console.log("letters: " + letters);
