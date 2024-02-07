@@ -60,10 +60,16 @@ function getWords(letters) {
     letters = letters.join("");
     const answerWords = [];
 
+
     allAnswers.forEach((answer) => {
       if (answer.availableLetters === letters) {
         // console.log(answer.answers.length);
-        answerWords.push(answer.answers);
+        for (const a of answer.answers){
+          // only quiz the user on words with 4 or less letters
+          if (a.length <= 4){
+            answerWords.push(a);
+          }
+        }
       }
     });
 
@@ -105,7 +111,7 @@ function playHiveSound(letter) {
   if (audio) {
     audio.src = dict[letter];
 
-    // only play if all sounds are loaded and the last sounds as ended
+    // only play if all sounds are loaded and the last sound has ended
     return new Promise((resolve) => {
       audio.addEventListener("canplaythrough", function onCanPlayThrough() {
         audio.removeEventListener("canplaythrough", onCanPlayThrough);
@@ -168,11 +174,26 @@ function playWordMorse(words) {
     }
   }
 
+  var modal = document.getElementById("quizModal");
+
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    modal.style.display = "none";
+  }
+
+
+
   // event listener of the buttons
   playButton.addEventListener("click", () => {
     currentIndex = 0; // Reset currentIndex when starting the quiz again
     isPlaying = true;
     playNextLetter();
+    modal.style.display = "block";
+
   });
 
   stopButton.addEventListener("click", () => {
@@ -193,10 +214,14 @@ function playWordMorse(words) {
 const letters = getHiveLetters();
 console.log("letters: " + letters);
 
+let morseAnswer = '';
+
 getWords(letters)
   .then((words) => {
     words = words.flat();
+    morseAnswer = words.join(' ');
     console.log("possible answers: " + words);
+    // console.log(morseAnswer);
     playWordMorse(words);
   })
   .catch((error) => {
@@ -204,7 +229,46 @@ getWords(letters)
   });
 
 //TODO
-// only do 4 letter words (10-15)
 // modal popup for the user to enter letters
 // provide feedback
 // leave some notes in the doc
+
+
+// function showAnswers(userAnswer) {
+//   var textarea = document.getElementById("userAnswer");
+//   var newText = "\n\n" + morseAnswer;
+//   textarea.value += newText;
+// };
+
+function showAnswers(userAnswer) {
+  var textarea = document.getElementById("userAnswer");
+  var newText = "\n\nCorrect Answer:\n" + morseAnswer; // Assuming morseAnswer has been defined and is also a string
+  var marked = ""; // Variable to store the colored text
+  var wrong_count = 0
+
+  // Compare each character of userAnswer with morseAnswer
+  for (var i = 0; i < userAnswer.length && i < morseAnswer.length; i++) {
+    // If characters match, add them normally
+    if (userAnswer[i] === morseAnswer[i]) {
+      marked += userAnswer[i];
+    } else {
+      // If characters do not match, wrap them in a span with red color
+      // coloredText += '<span style="color: red">' + userAnswer[i] + '</span>';
+      marked += '[' + userAnswer[i] + ']';
+      wrong_count ++;
+    }
+  }
+
+  // Add the colored text to the textarea
+  textarea.value = marked + newText + '\n\nYou got ' + wrong_count +' letter(s) wrong. Good job!';
+}
+
+
+var checkQuiz = document.getElementById('checkQuiz');
+
+
+checkQuiz.onclick = function () {
+  var userQuizAnswer = document.getElementById('userAnswer').value;
+  showAnswers(userQuizAnswer);
+}
+

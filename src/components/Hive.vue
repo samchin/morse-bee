@@ -35,7 +35,7 @@ const onKeyPress = (e: KeyboardEvent) => {
     return false;
   }
   if (pressedKey.length === 1 && store.availableLetters.includes(pressedKey)) {
-    userGuess.value += pressedKey;
+    // userGuess.value += pressedKey; -- commented out to disable keyboard event for the hive
     return true;
   }
 };
@@ -131,6 +131,8 @@ const displayMorse = (letter: any) => {
   console.log(morse);
   return morse.concat(" ", " ");
 };
+
+
 </script>
 
 <template>
@@ -139,6 +141,17 @@ const displayMorse = (letter: any) => {
   <button id="stopQuiz">Stop Quiz</button>
   <button id="pauseQuiz">Pause Quiz</button>
   <button id="continueQuiz">Continue Quiz</button>
+  <button id="checkQuiz">Check Quiz</button>
+
+
+  <!-- popup modal when play quiz is clicked -->
+  <div id="quizModal" class="modal">
+    <div class="quizModal-content">
+      <p>Please press 'space' when you hear a pause after a word in morse code.</p>
+      <span class="close">&times;</span>
+    </div>
+    <textarea id="userAnswer">User answer</textarea>
+  </div>
 
   <div class="sb-controls" style="`z-index: ${ZIndex}`">
     <div class="user-guess">
@@ -401,5 +414,53 @@ html.dark {
   .hive-actions {
     padding-bottom: 2rem;
   }
+}
+
+
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 20%;
+  top: 40%;
+  width: 50%; 
+  height: 50%; 
+  border: black solid 0.2em;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(255, 255, 255); /* Fallback color */
+  background-color: rgb(255, 255, 255); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+#userAnswer{
+  margin-top: 10%;
+  width: 90%;
+  height: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float:right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
