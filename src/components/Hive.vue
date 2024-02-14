@@ -4,6 +4,7 @@ import { useMainStore } from "../store";
 import { shuffle } from "../utils";
 import { useI18n } from "vue-i18n";
 import en from "../locales/en.json";
+import { GAP } from "element-plus";
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -34,7 +35,7 @@ const onKeyPress = (e: KeyboardEvent) => {
     return false;
   }
   if (pressedKey.length === 1 && store.availableLetters.includes(pressedKey)) {
-    userGuess.value += pressedKey;
+    // userGuess.value += pressedKey; -- commented out to disable keyboard event for the hive
     return true;
   }
 };
@@ -81,16 +82,79 @@ const playHiveSound = (letter: any) => {
     y: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Y_morse_code.ogg",
     z: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Z_morse_code.ogg",
   };
+  var cover = document.getElementById("cover");
   console.log(letter);
   audio.src = dict[letter];
   if (audio) {
-    audio.play();
+    if (cover) {
+      audio.play();
+      cover.style.display = "block";
+    }
   }
+  audio.onended = function () {
+    if (cover) {
+      cover.style.display = "none";
+    }
+  };
+};
+
+const displayMorse = (letter: any) => {
+  const dict: Record<string, string> = {
+    a: "._",
+    b: "_...",
+    c: "_._.",
+    d: "_..",
+    e: ".",
+    f: ".._.",
+    g: "_ _.",
+    h: "....",
+    i: "..",
+    j: "._ _ _",
+    k: "_._",
+    l: "._..",
+    m: "_ _",
+    n: "_ .",
+    o: "_ _ _",
+    p: "._ _.",
+    q: "_ _._",
+    r: "._.",
+    s: "...",
+    t: "_",
+    u: ".._",
+    v: "..._",
+    w: "._ _",
+    x: "_.._",
+    y: "_._ _",
+    z: "_ _..",
+  };
+  const morse = dict[letter];
+  console.log(morse);
+  return morse.concat(" ", " ");
 };
 </script>
 
 <template>
-  <div class="sb-controls" :style="`z-index: ${ZIndex}`">
+  <button id="playQuiz">Play Quiz</button>
+  <button id="stopQuiz">Stop Quiz</button>
+  <button id="pauseQuiz">Pause Quiz</button>
+  <button id="continueQuiz">Continue Quiz</button>
+  <button id="checkQuiz">Check Quiz</button>
+
+  <!-- popup modal when play quiz is clicked -->
+  <div id="quizModal" class="modal">
+    <div class="quizModal-content">
+      <p>
+        Please press 'space' when you hear a pause between two groups of Morse
+        Code.
+        <br /><br />
+        You will hear some 4 letter words in Morse Code.
+      </p>
+      <span class="close">&times;</span>
+    </div>
+    <textarea id="userAnswer"></textarea>
+  </div>
+
+  <div class="sb-controls" style="`z-index: ${ZIndex}`">
     <div class="user-guess">
       <strong
         v-for="(letter, index) in userGuess"
@@ -100,7 +164,17 @@ const playHiveSound = (letter: any) => {
       </strong>
     </div>
 
+    <div class="user-guess-morse">
+      <strong
+        v-for="(letter, index) in userGuess"
+        :class="{ 'middle-letter': letter === store.middleLetter }"
+        :key="`user-guess-${index}`">
+        {{ displayMorse(letter) }}
+      </strong>
+    </div>
+
     <div class="hive">
+      <div id="cover"></div>
       <svg
         class="hive-cell center"
         @click="
@@ -115,6 +189,9 @@ const playHiveSound = (letter: any) => {
           stroke-width="7.5" />
         <text class="cell-letter" x="50%" y="50%" dy="10.75%">
           {{ store.middleLetter }}
+        </text>
+        <text class="cell-morse" x="50%" y="65%" dy="10.75%">
+          {{ displayMorse(store.middleLetter) }}
         </text>
       </svg>
       <svg
@@ -133,6 +210,9 @@ const playHiveSound = (letter: any) => {
           stroke-width="7.5" />
         <text class="cell-letter" x="50%" y="50%" dy="10.75%">
           {{ letter }}
+        </text>
+        <text class="cell-morse" x="50%" y="65%" dy="10.75%">
+          {{ displayMorse(letter) }}
         </text>
       </svg>
     </div>
@@ -170,6 +250,13 @@ const playHiveSound = (letter: any) => {
     color: $bl-yellow;
   }
 }
+
+.user-guess-morse {
+  .middle-letter {
+    color: $bl-yellow;
+  }
+}
+
 .sb-controls {
   /* put entire hive behind correctGuesses when table is expanded */
   max-width: 290px;
@@ -204,30 +291,44 @@ const playHiveSound = (letter: any) => {
   text-transform: uppercase;
   pointer-events: none;
 }
+
+.hive .cell-morse {
+  font-weight: 600;
+  font-size: 25px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
 .hive-cell:first-child .cell-fill {
   cursor: pointer;
   fill: $bl-yellow;
   transition: all 100ms;
 }
-.hive-cell:nth-child(1) {
+.hive-cell:nth-child(2) {
   transform: translate(0, 0);
 }
-.hive-cell:nth-child(2) {
+.hive-cell:nth-child(2) .cell-fill {
+  cursor: pointer;
+  fill: $bl-yellow;
+  transition: all 100ms;
+}
+
+.hive-cell:nth-child(3) {
   transform: translate(-75%, -50%);
 }
-.hive-cell:nth-child(3) {
+.hive-cell:nth-child(4) {
   transform: translate(0, -100%);
 }
-.hive-cell:nth-child(4) {
+.hive-cell:nth-child(5) {
   transform: translate(75%, -50%);
 }
-.hive-cell:nth-child(5) {
+.hive-cell:nth-child(6) {
   transform: translate(75%, 50%);
 }
-.hive-cell:nth-child(6) {
+.hive-cell:nth-child(7) {
   transform: translate(0, 100%);
 }
-.hive-cell:nth-child(7) {
+.hive-cell:nth-child(8) {
   transform: translate(-75%, 50%);
 }
 .hive-actions {
@@ -286,6 +387,18 @@ html.dark {
   }
 }
 
+#cover {
+  display: none;
+  position: absolute;
+  background-color: white;
+  padding: 0 0;
+  width: 100%;
+  height: 100%;
+  top: 0%;
+  z-index: 999;
+  opacity: 0.5;
+}
+
 @media only screen and (max-height: 650px) {
   .sb-controls {
     top: max(65%, 420px);
@@ -308,5 +421,50 @@ html.dark {
   .hive-actions {
     padding-bottom: 2rem;
   }
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 20%;
+  top: 40%;
+  width: 60%;
+  height: 60%;
+  border: black solid 0.2em;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(255, 255, 255); /* Fallback color */
+  background-color: rgb(255, 255, 255); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.quizModal-content {
+  background-color: #fefefe;
+  // margin: 15% auto; /* 15% from the top and centered */
+  // padding: 20px;
+  // border: 1px solid #888;
+  // width: 80%; /* Could be more or less, depending on screen size */
+}
+
+#userAnswer {
+  margin-top: 10%;
+  width: 90%;
+  height: 50%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

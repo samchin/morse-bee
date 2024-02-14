@@ -62,9 +62,9 @@ store.startGame({ allAnswers });
     title="Congratulations!">
     <GameWon />
   </el-dialog>
-  <el-dialog v-model="showYesterdaysAnswers" :title="$t('Yesterdays Answers')">
+  <!-- <el-dialog v-model="showYesterdaysAnswers" :title="$t('Yesterdays Answers')">
     <YesterdaysAnswers />
-  </el-dialog>
+  </el-dialog> -->
   <el-dialog v-model="showInfo" :title="$t('How to play')">
     <Info />
   </el-dialog>
@@ -86,16 +86,15 @@ store.startGame({ allAnswers });
         </el-tooltip>
         <span class="responsive-menu-text">{{ $t("Info") }}</span>
       </el-menu-item>
-      <el-menu-item index="2" @click="showYesterdaysAnswers = true">
+      <!-- <el-menu-item index="2" @click="showYesterdaysAnswers = true">
         <el-tooltip :content="$t('Yesterday')" placement="top">
           <el-icon class="menu-icon">
             <Calendar />
           </el-icon>
         </el-tooltip>
         <span class="responsive-menu-text">{{ $t("Yesterday") }}</span>
-      </el-menu-item>
+      </el-menu-item> -->
 
-      <!-- <audio id="hiveAudio" src="https://upload.wikimedia.org/wikipedia/commons/f/f3/A_morse_code.ogg" preload="auto" hidden></audio> -->
       <audio id="hiveAudio" preload="auto" hidden></audio>
 
       <el-menu-item index="3">
