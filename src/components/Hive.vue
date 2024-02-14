@@ -133,8 +133,6 @@ const displayMorse = (letter: any) => {
 };
 </script>
 
-
-
 <template>
   <button id="playQuiz">Play Quiz</button>
   <button id="stopQuiz">Stop Quiz</button>
@@ -146,8 +144,9 @@ const displayMorse = (letter: any) => {
   <div id="quizModal" class="modal">
     <div class="quizModal-content">
       <p>
-        Please press 'space' when you hear a pause between two groups of Morse Code.
-        <br><br>
+        Please press 'space' when you hear a pause between two groups of Morse
+        Code.
+        <br /><br />
         You will hear some 4 letter words in Morse Code.
       </p>
       <span class="close">&times;</span>
@@ -308,7 +307,7 @@ const displayMorse = (letter: any) => {
 .hive-cell:nth-child(2) {
   transform: translate(0, 0);
 }
-.hive-cell:nth-child(2) .cell-fill{
+.hive-cell:nth-child(2) .cell-fill {
   cursor: pointer;
   fill: $bl-yellow;
   transition: all 100ms;

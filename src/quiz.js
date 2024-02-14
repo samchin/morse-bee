@@ -173,7 +173,6 @@ function playWordMorse(words) {
     }
   }
 
-
   var modal = document.getElementById("quizModal");
 
   // Get the <span> element that closes the modal
@@ -228,18 +227,19 @@ getWords(letters)
 
 function showAnswers(userAnswer) {
   var textarea = document.getElementById("userAnswer");
-  var ans = document.createElement('div');
-  ans.id= 'corAns' //correct answer
-  ans.style.cssText ='width:90%; padding-left: 3%; font-family:"Space Mono",monospace; font-style: normal; text-align: left; font-size: 13px'
-  var temp='';
-  for (var i=0; i<morseAnswer.length; i++){
-    temp+= morseAnswer[i] + ' ';
-    if (i+1%16 == 0){
-      temp+='\n';
+  var ans = document.createElement("div");
+  ans.id = "corAns"; //correct answer
+  ans.style.cssText =
+    'width:90%; padding-left: 3%; font-family:"Space Mono",monospace; font-style: normal; text-align: left; font-size: 13px';
+  var temp = "";
+  for (var i = 0; i < morseAnswer.length; i++) {
+    temp += morseAnswer[i] + " ";
+    if (i + (1 % 16) == 0) {
+      temp += "\n";
     }
-  };
+  }
   var correctAns = "\n\nCorrect Answer:\n\n" + temp; // Assuming morseAnswer has been defined and is also a string
-  ans.innerHTML=correctAns;
+  ans.innerHTML = correctAns;
   var marked = ""; // Variable to store the colored text
   var wrong_count = 0;
 
@@ -255,9 +255,8 @@ function showAnswers(userAnswer) {
       wrong_count++;
     }
   }
-  
-  document.querySelector('#quizModal').appendChild(ans);
 
+  document.querySelector("#quizModal").appendChild(ans);
 
   textarea.value = marked;
 }
@@ -268,4 +267,3 @@ checkQuiz.onclick = function () {
   var userQuizAnswer = document.getElementById("userAnswer").value;
   showAnswers(userQuizAnswer);
 };
-
