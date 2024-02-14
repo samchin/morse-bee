@@ -60,13 +60,12 @@ function getWords(letters) {
     letters = letters.join("");
     const answerWords = [];
 
-
     allAnswers.forEach((answer) => {
       if (answer.availableLetters === letters) {
         // console.log(answer.answers.length);
-        for (const a of answer.answers){
+        for (const a of answer.answers) {
           // only quiz the user on words with 4 or less letters
-          if (a.length <= 4){
+          if (a.length <= 4) {
             answerWords.push(a);
           }
         }
@@ -174,8 +173,8 @@ function playWordMorse(words) {
     }
   }
 
-  var modal = document.getElementById("quizModal");
 
+  var modal = document.getElementById("quizModal");
 
   // Get the <span> element that closes the modal
   var span = document.getElementsByClassName("close")[0];
@@ -183,17 +182,16 @@ function playWordMorse(words) {
   // When the user clicks on <span> (x), close the modal
   span.onclick = function () {
     modal.style.display = "none";
-  }
-
-
+  };
 
   // event listener of the buttons
   playButton.addEventListener("click", () => {
     currentIndex = 0; // Reset currentIndex when starting the quiz again
     isPlaying = true;
-    playNextLetter();
     modal.style.display = "block";
-
+    setTimeout(() => {
+      playNextLetter(); // Start playing quiz after 5 seconds
+    }, 5000);
   });
 
   stopButton.addEventListener("click", () => {
@@ -214,12 +212,12 @@ function playWordMorse(words) {
 const letters = getHiveLetters();
 console.log("letters: " + letters);
 
-let morseAnswer = '';
+let morseAnswer = "";
 
 getWords(letters)
   .then((words) => {
     words = words.flat();
-    morseAnswer = words.join(' ');
+    morseAnswer = words.join(" ");
     console.log("possible answers: " + words);
     // console.log(morseAnswer);
     playWordMorse(words);
@@ -228,47 +226,46 @@ getWords(letters)
     console.error(error);
   });
 
-//TODO
-// modal popup for the user to enter letters
-// provide feedback
-// leave some notes in the doc
-
-
-// function showAnswers(userAnswer) {
-//   var textarea = document.getElementById("userAnswer");
-//   var newText = "\n\n" + morseAnswer;
-//   textarea.value += newText;
-// };
-
 function showAnswers(userAnswer) {
   var textarea = document.getElementById("userAnswer");
-  var newText = "\n\nCorrect Answer:\n" + morseAnswer; // Assuming morseAnswer has been defined and is also a string
+  var ans = document.createElement('div');
+  ans.id= 'corAns' //correct answer
+  ans.style.cssText ='width:90%; padding-left: 3%; font-family:"Space Mono",monospace; font-style: normal; text-align: left; font-size: 13px'
+  var temp='';
+  for (var i=0; i<morseAnswer.length; i++){
+    temp+= morseAnswer[i] + ' ';
+    if (i+1%16 == 0){
+      temp+='\n';
+    }
+  };
+  var correctAns = "\n\nCorrect Answer:\n\n" + temp; // Assuming morseAnswer has been defined and is also a string
+  ans.innerHTML=correctAns;
   var marked = ""; // Variable to store the colored text
-  var wrong_count = 0
+  var wrong_count = 0;
 
   // Compare each character of userAnswer with morseAnswer
   for (var i = 0; i < userAnswer.length && i < morseAnswer.length; i++) {
     // If characters match, add them normally
     if (userAnswer[i] === morseAnswer[i]) {
-      marked += userAnswer[i];
+      marked += " " + userAnswer[i];
     } else {
       // If characters do not match, wrap them in a span with red color
       // coloredText += '<span style="color: red">' + userAnswer[i] + '</span>';
-      marked += '[' + userAnswer[i] + ']';
-      wrong_count ++;
+      marked += "[" + userAnswer[i] + "]";
+      wrong_count++;
     }
   }
+  
+  document.querySelector('#quizModal').appendChild(ans);
 
-  // Add the colored text to the textarea
-  textarea.value = marked + newText + '\n\nYou got ' + wrong_count +' letter(s) wrong. Good job!';
+
+  textarea.value = marked;
 }
 
-
-var checkQuiz = document.getElementById('checkQuiz');
-
+var checkQuiz = document.getElementById("checkQuiz");
 
 checkQuiz.onclick = function () {
-  var userQuizAnswer = document.getElementById('userAnswer').value;
+  var userQuizAnswer = document.getElementById("userAnswer").value;
   showAnswers(userQuizAnswer);
-}
+};
 

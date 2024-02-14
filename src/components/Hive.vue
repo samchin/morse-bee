@@ -131,26 +131,28 @@ const displayMorse = (letter: any) => {
   console.log(morse);
   return morse.concat(" ", " ");
 };
-
-
 </script>
 
+
+
 <template>
-  <div class="cover" id="cover"></div>
   <button id="playQuiz">Play Quiz</button>
   <button id="stopQuiz">Stop Quiz</button>
   <button id="pauseQuiz">Pause Quiz</button>
   <button id="continueQuiz">Continue Quiz</button>
   <button id="checkQuiz">Check Quiz</button>
 
-
   <!-- popup modal when play quiz is clicked -->
   <div id="quizModal" class="modal">
     <div class="quizModal-content">
-      <p>Please press 'space' when you hear a pause after a word in morse code.</p>
+      <p>
+        Please press 'space' when you hear a pause between two groups of Morse Code.
+        <br><br>
+        You will hear some 4 letter words in Morse Code.
+      </p>
       <span class="close">&times;</span>
     </div>
-    <textarea id="userAnswer">User answer</textarea>
+    <textarea id="userAnswer"></textarea>
   </div>
 
   <div class="sb-controls" style="`z-index: ${ZIndex}`">
@@ -173,6 +175,7 @@ const displayMorse = (letter: any) => {
     </div>
 
     <div class="hive">
+      <div id="cover"></div>
       <svg
         class="hive-cell center"
         @click="
@@ -302,25 +305,31 @@ const displayMorse = (letter: any) => {
   fill: $bl-yellow;
   transition: all 100ms;
 }
-.hive-cell:nth-child(1) {
+.hive-cell:nth-child(2) {
   transform: translate(0, 0);
 }
-.hive-cell:nth-child(2) {
+.hive-cell:nth-child(2) .cell-fill{
+  cursor: pointer;
+  fill: $bl-yellow;
+  transition: all 100ms;
+}
+
+.hive-cell:nth-child(3) {
   transform: translate(-75%, -50%);
 }
-.hive-cell:nth-child(3) {
+.hive-cell:nth-child(4) {
   transform: translate(0, -100%);
 }
-.hive-cell:nth-child(4) {
+.hive-cell:nth-child(5) {
   transform: translate(75%, -50%);
 }
-.hive-cell:nth-child(5) {
+.hive-cell:nth-child(6) {
   transform: translate(75%, 50%);
 }
-.hive-cell:nth-child(6) {
+.hive-cell:nth-child(7) {
   transform: translate(0, 100%);
 }
-.hive-cell:nth-child(7) {
+.hive-cell:nth-child(8) {
   transform: translate(-75%, 50%);
 }
 .hive-actions {
@@ -381,15 +390,14 @@ html.dark {
 
 #cover {
   display: none;
+  position: absolute;
   background-color: white;
   padding: 0 0;
   width: 100%;
-  height: 50%;
-  position: absolute;
-  top: 62%;
-  left: 20%;
+  height: 100%;
+  top: 0%;
   z-index: 999;
-  opacity: 50%;
+  opacity: 0.5;
 }
 
 @media only screen and (max-height: 650px) {
@@ -416,9 +424,6 @@ html.dark {
   }
 }
 
-
-
-
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
@@ -426,8 +431,8 @@ html.dark {
   z-index: 1; /* Sit on top */
   left: 20%;
   top: 40%;
-  width: 50%; 
-  height: 50%; 
+  width: 60%;
+  height: 60%;
   border: black solid 0.2em;
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(255, 255, 255); /* Fallback color */
@@ -435,24 +440,24 @@ html.dark {
 }
 
 /* Modal Content/Box */
-.modal-content {
+.quizModal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  // margin: 15% auto; /* 15% from the top and centered */
+  // padding: 20px;
+  // border: 1px solid #888;
+  // width: 80%; /* Could be more or less, depending on screen size */
 }
 
-#userAnswer{
+#userAnswer {
   margin-top: 10%;
   width: 90%;
-  height: 80%;
+  height: 50%;
 }
 
 /* The Close Button */
 .close {
   color: #aaa;
-  float:right;
+  float: right;
   font-size: 28px;
   font-weight: bold;
 }
